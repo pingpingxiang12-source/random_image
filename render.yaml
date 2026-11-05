@@ -1,0 +1,18 @@
+# Render Blueprint：把仓库连到 Render 后，会自动按下面的配置创建 Web Service。
+# 文档：https://render.com/docs/blueprint-spec
+services:
+  - type: web
+    name: random-image
+    runtime: python
+    plan: free
+    region: singapore
+    branch: master
+    autoDeploy: true
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "gunicorn server:app --bind 0.0.0.0:$PORT --workers 2 --threads 4 --timeout 120 --access-logfile -"
+    healthCheckPath: /healthz
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.13.5"
+      - key: IMAGE_DIR
+        value: "images"
